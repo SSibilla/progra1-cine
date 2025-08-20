@@ -1,3 +1,1 @@
-print("Hola")
-"""wdawdawd
-awdawd"""
+print("hola q tal")
