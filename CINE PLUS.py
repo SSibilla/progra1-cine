@@ -16,14 +16,14 @@ def mostrar_sala(matriz):
     print ("CINEPLUS SALA de cine")
     print ("  A B C D E F G H I")
     for i,fila in enumerate(matriz):
-        print(i+1," ".join(fila))
+        print(i+1," ".join(fila)) #join une todos los elementos de la fila y los separa con un espacio
 
 
 #simular ocupacion de la SALA
 def precarga_aleatoria(matriz):
     for f in range(1,4):#entre fila 2 y 4 (recordar que nuestra fila 1 es la 0 realmente)
         for c in range(1,8): #entre columna 2 y 8
-            if random.random()<0.7:
+            if random.random()<0.7: #aprox 70%
                 matriz[f][c]="O"
 
 
