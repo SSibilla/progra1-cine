@@ -40,7 +40,7 @@ def reservar(matriz):
         else:
             print("Butaca no disponible!")
         butaca = input("Ingrese butaca a reservar, filas 1 a 6, posicion A a I , 0 para terminar: ")
-    return matriz #no devuelve T o F, sino que directamente devuelve la matriz modificada
+    return matriz
 
 def cantidad_de_butacas_libres(matriz):
     cont=0
@@ -71,7 +71,9 @@ def menu():
         if opcion == "1":
             mostrar_sala(SALA)
         elif opcion == "2":
+            mostrar_sala(SALA)
             SALA = reservar(SALA)
+            mostrar_sala(SALA)
         elif opcion == "3":
             SALA = cancelar_reserva(SALA)
         elif opcion == "4":
