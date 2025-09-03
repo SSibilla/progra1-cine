@@ -28,6 +28,13 @@ def precarga_aleatoria(matriz):
             if random.random()<0.7: #aprox 70%
                 matriz[f][c]="O"
 
+def cantidad_de_butacas_libres(matriz):
+    cont=0
+    for fila in matriz:
+        for col in fila:
+            if col=="L":
+                cont+=1
+    print("cantidad de butacas LIBRES en la SALA: ",cont)
 
 def reservar(matriz):
     butaca=input("Ingrese butaca a reservar, filas 1 a 6, posicion A a I , 0 para terminar: ")
