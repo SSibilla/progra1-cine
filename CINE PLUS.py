@@ -68,6 +68,7 @@ def validar_butaca(butaca):
     butaca=butaca.upper()
     letra=butaca[-1]
     numero=butaca[:-1]
+    #corregir
     if butaca=="0":
         return None
     while letra not in letras or numero not in numeros_filas:
