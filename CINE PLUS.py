@@ -1,5 +1,6 @@
 
 import random
+#esto va en main
 letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
 numeros_filas=["1","2","3","4","5","6"]
 
@@ -43,7 +44,7 @@ def reservar(matriz):
         else:
             print("Butaca no disponible!")
         butaca = input("Ingrese butaca a reservar, filas 1 a 6, posicion A a I , 0 para terminar: ")
-    return matriz
+
 
 """
 === ESTADÍSTICAS ===
@@ -76,11 +77,22 @@ def validar_butaca(butaca):
         numero = butaca[:-1]
     return butaca
 
+def cantidad_de_butacas_libres(matriz):
+    cont=0
+    for fila in matriz:
+        for col in fila:
+            if col=="L":
+                cont+=1
+    print("cantidad de butacas LIBRES en la SALA: ",cont)
+
 def menu():
+    #todo esto en ppal
     SALA=crear_sala()
     precarga_aleatoria(SALA)
     recaudacion=0
-    opcion=" "
+    #hasta aca
+    opcion = input("Elegí una opción: ")
+    validar_opcion_menu(opcion)
     while opcion != "0":
         print("\n=== MENÚ CINEPLUS ===")
         print("1) Mostrar SALA")
