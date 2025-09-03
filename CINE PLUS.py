@@ -45,13 +45,17 @@ def reservar(matriz):
         butaca = input("Ingrese butaca a reservar, filas 1 a 6, posicion A a I , 0 para terminar: ")
     return matriz
 
-def cantidad_de_butacas_libres(matriz):
-    cont=0
-    for fila in matriz:
-        for col in fila:
-            if col=="L":
-                cont+=1
-    print("cantidad de butacas LIBRES en la SALA: ",cont)
+"""
+=== ESTADÍSTICAS ===
+aca se va a usar sort, max,min, lambda!!!!!!!
+Butacas libres: 28
+Butacas ocupadas: 18
+Butacas reservadas: 8
+Porcentaje de ocupación: 44%
+Fila con más ocupación: fila 3 (7 butacas)
+Fila con menos ocupación: fila 6 (2 butacas)
+Ranking de filas por ocupación: [3, 2, 5, 1, 4, 6]
+"""
 
 def validar_opcion_menu(opcion):
     posibilidades=["0","1","2","3","4","5","6","7"]
