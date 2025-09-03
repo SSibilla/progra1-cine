@@ -1,5 +1,7 @@
 
 import random
+letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
+numeros_filas=["1","2","3","4","5","6"]
 
 #creo SALA de cine e inicializo la SALA en libre
 def crear_sala():
@@ -28,12 +30,13 @@ def precarga_aleatoria(matriz):
 
 
 def reservar(matriz):
-    letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
     butaca=input("Ingrese butaca a reservar, filas 1 a 6, posicion A a I , 0 para terminar: ")
-    #tomo al string como una lista, donde el primer elem es la fila y el segundo la col
     while butaca!="0":
-        f=int(butaca[0])-1 #butaca[0] es la fila y butaca[1] es la columna
-        c=letras.index(butaca[1]) #para la columna, uso lista auxiliar de letras
+        butaca = validar_butaca(butaca)
+        numero = butaca[:-1]
+        letra = butaca[-1]
+        f = int(numero) - 1
+        c = letras.index(letra)
         if matriz[f][c]=="L":
             print("Se ha reservado su butaca")
             matriz[f][c]="R"
@@ -49,6 +52,25 @@ def cantidad_de_butacas_libres(matriz):
             if col=="L":
                 cont+=1
     print("cantidad de butacas LIBRES en la SALA: ",cont)
+
+def validar_opcion_menu(opcion):
+    posibilidades=["0","1","2","3","4","5","6","7"]
+    while opcion not in posibilidades:
+        opcion = input("⚠️ Opcion no valida, vuelva a intentarlo: ")
+    return opcion
+
+def validar_butaca(butaca):
+    butaca=butaca.upper()
+    letra=butaca[-1]
+    numero=butaca[:-1]
+    if butaca=="0":
+        return None
+    while letra not in letras or numero not in numeros_filas:
+        print("⚠️ Entrada inválida. Use número+letra (ej: 3C).")
+        butaca = input("Ingrese butaca (ej. 3C) o 0 para salir: ").upper()
+        letra = butaca[-1]
+        numero = butaca[:-1]
+    return butaca
 
 def menu():
     SALA=crear_sala()
@@ -67,6 +89,7 @@ def menu():
         print("0) Salir")
 
         opcion = input("Elegí una opción: ")
+        validar_opcion_menu(opcion)
 
         if opcion == "1":
             mostrar_sala(SALA)
