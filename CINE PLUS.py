@@ -1,7 +1,7 @@
 
 import random
 letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
-numeros_filas = [str(i) for i in range(1, 7)]
+numeros_filas=["1","2","3","4","5","6"]
 
 #creo SALA de cine e inicializo la SALA en libre
 def crear_sala():
