@@ -38,6 +38,8 @@ def cantidad_de_butacas_libres(matriz):
 
 def reservar(matriz):
     butaca=input("Ingrese butaca a reservar, filas 1 a 6, posicion A a I , 0 para terminar: ")
+    if butaca=="0":
+        return matriz
     while butaca!="0":
         butaca = validar_butaca(butaca)
         numero = butaca[:-1]
@@ -50,7 +52,26 @@ def reservar(matriz):
         else:
             print("Butaca no disponible!")
         butaca = input("Ingrese butaca a reservar, filas 1 a 6, posicion A a I , 0 para terminar: ")
-    return matriz
+
+
+def cancelar_reserva(matriz):
+    mostrar_sala(matriz)
+    butaca=input("Ingrese butaca que desea cancelar la reserva (Ej 3C), filas 1 a 6, posicion A a I , 0 para terminar: ")
+    if butaca=="0":
+        return(matriz)
+    while butaca!="0":
+        butaca = validar_butaca(butaca)
+        numero = butaca[:-1]
+        letra = butaca[-1]
+        f = int(numero) - 1
+        c = letras.index(letra)
+        if matriz[f][c]=="R":
+            print("Se ha cancelado su reserva con exito")
+            matriz[f][c]="L"
+        else:
+            print("la butaca elegida no esta reservada!")
+        butaca = input("Ingrese butaca que desea cancelar la reserva (Ej 3C), filas 1 a 6, posicion A a I , 0 para terminar: ")
+
 
 """
 === ESTADÍSTICAS ===
@@ -101,16 +122,16 @@ def menu():
         print("0) Salir")
 
         opcion = input("Elegí una opción: ")
-        validar_opcion_menu(opcion)
+        opcion = validar_opcion_menu(opcion)
 
         if opcion == "1":
             mostrar_sala(SALA)
         elif opcion == "2":
             mostrar_sala(SALA)
-            SALA = reservar(SALA)
+            reservar(SALA)
             mostrar_sala(SALA)
         elif opcion == "3":
-            SALA = cancelar_reserva(SALA)
+            cancelar_reserva(SALA)
         elif opcion == "4":
             SALA, recaudacion = confirmar_venta(SALA, recaudacion)
         elif opcion == "5":
