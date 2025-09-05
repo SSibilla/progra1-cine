@@ -73,17 +73,7 @@ def cancelar_reserva(matriz):
         butaca = input("Ingrese butaca que desea cancelar la reserva (Ej 3C), filas 1 a 6, posicion A a I , 0 para terminar: ")
 
 
-"""
-=== ESTADÍSTICAS ===
-aca se va a usar sort, max,min, lambda!!!!!!!
-Butacas libres: 28
-Butacas ocupadas: 18
-Butacas reservadas: 8
-Porcentaje de ocupación: 44%
-Fila con más ocupación: fila 3 (7 butacas)
-Fila con menos ocupación: fila 6 (2 butacas)
-Ranking de filas por ocupación: [3, 2, 5, 1, 4, 6]
-"""
+
 
 def validar_opcion_menu(opcion):
     posibilidades=["0","1","2","3","4","5","6","7"]
@@ -104,6 +94,33 @@ def validar_butaca(butaca):
         letra = butaca[-1]
         numero = butaca[:-1]
     return butaca
+
+def confirmar_venta(matriz, recaudacion):
+    butaca=input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
+    if butaca=="0":
+        return recaudacion
+    while butaca!="0":
+        butaca = validar_butaca(butaca)
+        numero = butaca[:-1]
+        letra = butaca[-1]
+        f = int(numero) - 1
+        c = letras.index(letra)
+        numero = int(numero)
+        if matriz[f][c] == "R":
+            print("su compra ha sido CONFIRMADA")
+            matriz[f][c] = "1"
+            match numero:
+                case 1 | 2:
+                    recaudacion += 1000
+                case 3 | 4:
+                    recaudacion += 2000
+                case 5 | 6:
+                    recaudacion += 1500
+        else:
+            print("La butaca seleccionada no se encuentra reservada!")
+        butaca = input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
+    return recaudacion
+
 
 def menu():
     SALA=crear_sala()
@@ -133,13 +150,25 @@ def menu():
         elif opcion == "3":
             cancelar_reserva(SALA)
         elif opcion == "4":
-            SALA, recaudacion = confirmar_venta(SALA, recaudacion)
+            recaudacion=confirmar_venta(SALA, recaudacion)
         elif opcion == "5":
             buscar_butacas_juntas(SALA)
         elif opcion == "6":
-            cantidad_de_butacas_libres(SALA)
+            #ACA HAY QUE AGREGAR:
+            """
+            === ESTADÍSTICAS ===
+            aca se va a usar sort, max,min, lambda!!!!!!!
+            Butacas libres: 28
+            Butacas ocupadas: 18
+            Butacas reservadas: 8
+            Porcentaje de ocupación: 44%
+            Fila con más ocupación: fila 3 (7 butacas)
+            Fila con menos ocupación: fila 6 (2 butacas)
+            Ranking de filas por ocupación: [3, 2, 5, 1, 4, 6]
+            """
+            cantidad_de_butacas_libres(SALA) #esto hay que meterlo dentro de la estadistica
         elif opcion == "7":
-            mostrar_recaudacion(recaudacion)
+            print ("la recaudacion de la sala es: $", recaudacion)
         elif opcion == "0":
             print("¡Gracias por usar CINEPLUS! 👋")
         else:
