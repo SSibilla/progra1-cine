@@ -85,9 +85,8 @@ def validar_butaca(butaca):
     butaca=butaca.upper()
     letra=butaca[-1]
     numero=butaca[:-1]
-    #corregir
     if butaca=="0":
-        return None
+        menu()
     while letra not in letras or numero not in numeros_filas:
         print("⚠️ Entrada inválida. Use número+letra (ej: 3C).")
         butaca = input("Ingrese butaca (ej. 3C) o 0 para salir: ").upper()
