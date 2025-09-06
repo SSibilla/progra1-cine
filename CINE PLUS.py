@@ -108,7 +108,7 @@ def confirmar_venta(matriz, recaudacion):
         numero = int(numero)
         if matriz[f][c] == "R":
             print("su compra ha sido CONFIRMADA")
-            matriz[f][c] = "1"
+            matriz[f][c] = "O"
             match numero:
                 case 1 | 2:
                     recaudacion += 1000
