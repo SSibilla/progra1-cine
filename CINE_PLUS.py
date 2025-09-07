@@ -99,9 +99,15 @@ def validar_butaca(butaca,letras,numeros_filas):
     while (letra not in letras or numero not in numeros_filas) and butaca != "0":
         print("⚠️ Entrada inválida. Use número+letra (ej: 3C).")
         butaca = input("Ingrese butaca (ej. 3C) o 0 para salir: ").upper()
-        letra = butaca[-1]
-        numero = butaca[:-1]
-    
+        #letra = butaca[-1]
+        #numero = butaca[:-1]
+        if len(butaca) >= 2:
+            numero = butaca[:-1]
+            letra = butaca[-1]
+        else:
+            numero = ""
+            letra = ""
+
     return butaca
 
 def mostrar_butacas_reservadas(matriz,numeros_filas,letras):
@@ -152,11 +158,17 @@ def confirmar_venta(matriz, recaudacion,butacas_vendidas,numeros_filas, letras):
             butaca = input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
     return recaudacion
 
-def buscar_butacas_juntas(matriz):
-    n = int(input("¿Cuántas butacas seguidas desea? "))
+def buscar_butacas_juntas(matriz,letras):
+    
     filas = len(matriz)
     cols = len(matriz[0])
-    letras = ["A","B","C","D","E","F","G","H","I"]
+
+    s = input("¿Cuántas butacas seguidas desea? (1-" + str(cols) + "): ")
+    while (not s.isdigit()) or (int(s) < 1) or (int(s) > cols):
+        print("⚠️ Opción inválida: ingrese un número entre 1 y " + str(cols) + ".")
+        s = input("¿Cuántas butacas seguidas desea? (1-" + str(cols) + "): ")
+
+    n = int(s)
 
     encontrado = False
     seguir_busqueda = True
@@ -172,21 +184,34 @@ def buscar_butacas_juntas(matriz):
                     contador += 1
                     c += 1
                 if contador >= n:
+                    encontrado = True
+
+
                     inicio_butaca = str(f+1) + letras[inicio]
                     fin_butaca = str(f+1) + letras[inicio+n-1]
                     sugerencia = inicio_butaca + "-" + fin_butaca
                     print("Sugerencia:", sugerencia)
 
                     opcion = input("¿Desea reservar la secuencia de butacas? (s/n): ").lower()
+                    while opcion != "s" and opcion != "n":
+                        print ("⚠️Opción inválida. Ingrese s(SI) o n(NO).")
+                        opcion = input("¿Desea reservar la secuencia de butacas? (s/n): ").lower()
+
                     if opcion == "s":
                         for i in range(inicio, inicio+n):
                             matriz[f][i] = "R"
                         print("Bloque reservado correctamente:", sugerencia)
                         encontrado = True
 
-                        otra = input("¿Quiere reservar otro bloque de butacas? (s/n): ").lower()
+                        otra = input(f"¿Quiere reservar otro bloque de {n} butacas? (s/n): ").lower()
+                        while otra != "s" and otra != "n":
+                            print ("⚠️Opción inválida. Ingrese s(SI) o n(NO).")
+                            otra = input(f"¿Quiere reservar otro bloque de {n} butacas? (s/n): ").lower()
                         if otra != "s":
                             seguir_busqueda = False
+                        else:
+                            encontrado = False
+                            
                     else:
                         seguir_busqueda = False
             else:
@@ -194,10 +219,9 @@ def buscar_butacas_juntas(matriz):
         f += 1
 
     if not encontrado:
-        print("No se encontraron más secuencias disponibles.")
+        print(f"No se encontraron más secuencias de {n} butacas disponibles. Volviendo al menú...")
 
-    if not encontrado:
-        print("No se encontraron más secuencias disponibles.")
+
 
 def mostrar_recaudacion (recaudacion,butacas_vendidas):
     if len(butacas_vendidas)>0:
@@ -275,7 +299,7 @@ def menu(letras,numeros_filas,SALA,recaudacion,butacas_vendidas):
         elif opcion == "4":
             recaudacion=confirmar_venta(SALA, recaudacion,butacas_vendidas,numeros_filas, letras)
         elif opcion == "5":
-            buscar_butacas_juntas(SALA)
+            buscar_butacas_juntas(SALA, letras)
                         
         elif opcion == "6":
             mostrar_estadisticas (SALA, numeros_filas)
