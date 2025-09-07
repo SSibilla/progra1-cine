@@ -78,20 +78,24 @@ def validar_opcion_menu(opcion):
     return opcion
 
 def validar_butaca(butaca,letras,numeros_filas):
-    butaca=butaca.upper()
-    letra=butaca[-1]
-    numero=butaca[:-1]
-    while (letra not in letras or numero not in numeros_filas) and butaca != "0":
-        print("⚠️ Entrada inválida. Use número+letra (ej: 3C).")
-        butaca = input("Ingrese butaca (ej. 3C) o 0 para salir: ").upper()
-        #letra = butaca[-1]
-        #numero = butaca[:-1]
+    butaca = butaca.strip().upper()
+    valido = False
+    while not valido:
+        if butaca == "0":
+            return "0" #sirve para cancelar reserva y reservar
+        # Si hay al menos 2 caracteres, separo número y letra
         if len(butaca) >= 2:
             numero = butaca[:-1]
             letra = butaca[-1]
         else:
             numero = ""
             letra = ""
+        # Reglas de validación
+        if numero.isdigit() and numero in numeros_filas and letra in letras:
+            valido = True  # salimos del while
+        else:
+            print("⚠️ Entrada inválida. Use número+letra (ej: 3C).")
+            butaca = input("Ingrese butaca (ej. 3C) o 0 para salir: ").strip().upper()
     return butaca
 
 def mostrar_butacas_reservadas(matriz,numeros_filas,letras):
