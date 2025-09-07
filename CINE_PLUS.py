@@ -152,6 +152,53 @@ def confirmar_venta(matriz, recaudacion,butacas_vendidas,numeros_filas, letras):
             butaca = input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
     return recaudacion
 
+def buscar_butacas_juntas(matriz):
+    n = int(input("¿Cuántas butacas seguidas desea? "))
+    filas = len(matriz)
+    cols = len(matriz[0])
+    letras = ["A","B","C","D","E","F","G","H","I"]
+
+    encontrado = False
+    seguir_busqueda = True
+
+    f = 0
+    while f < filas and seguir_busqueda:
+        c = 0
+        while c < cols and seguir_busqueda:
+            if matriz[f][c] == "L":
+                inicio = c
+                contador = 0
+                while c < cols and matriz[f][c] == "L":
+                    contador += 1
+                    c += 1
+                if contador >= n:
+                    inicio_butaca = str(f+1) + letras[inicio]
+                    fin_butaca = str(f+1) + letras[inicio+n-1]
+                    sugerencia = inicio_butaca + "-" + fin_butaca
+                    print("Sugerencia:", sugerencia)
+
+                    opcion = input("¿Desea reservar la secuencia de butacas? (s/n): ").lower()
+                    if opcion == "s":
+                        for i in range(inicio, inicio+n):
+                            matriz[f][i] = "R"
+                        print("Bloque reservado correctamente:", sugerencia)
+                        encontrado = True
+
+                        otra = input("¿Quiere reservar otro bloque de butacas? (s/n): ").lower()
+                        if otra != "s":
+                            seguir_busqueda = False
+                    else:
+                        seguir_busqueda = False
+            else:
+                c += 1
+        f += 1
+
+    if not encontrado:
+        print("No se encontraron más secuencias disponibles.")
+
+    if not encontrado:
+        print("No se encontraron más secuencias disponibles.")
+
 def mostrar_recaudacion (recaudacion,butacas_vendidas):
     if len(butacas_vendidas)>0:
         print (f"BUTACAS VENDIDAS: {len(butacas_vendidas)}")
