@@ -81,21 +81,22 @@ def validar_butaca(butaca,letras,numeros_filas):
     butaca = butaca.strip().upper()
     valido = False
     while not valido:
-        if butaca == "0":
-            return "0" #sirve para cancelar reserva y reservar
         # Si hay al menos 2 caracteres, separo número y letra
-        if len(butaca) >= 2:
-            numero = butaca[:-1]
-            letra = butaca[-1]
+        if butaca == "0":
+            valido = True
         else:
-            numero = ""
-            letra = ""
-        # Reglas de validación
-        if numero.isdigit() and numero in numeros_filas and letra in letras:
-            valido = True  # salimos del while
-        else:
-            print("⚠️ Entrada inválida. Use número+letra (ej: 3C).")
-            butaca = input("Ingrese butaca (ej. 3C) o 0 para salir: ").strip().upper()
+            if len(butaca) >= 2:
+                numero = butaca[:-1]
+                letra = butaca[-1]
+            else:
+                numero = ""
+                letra = ""
+            # Reglas de validación
+            if numero.isdigit() and numero in numeros_filas and letra in letras:
+                valido = True  # salimos del while
+            else:
+                print("⚠️ Entrada inválida. Use número+letra (ej: 3C).")
+                butaca = input("Ingrese butaca (ej. 3C) o 0 para salir: ").strip().upper()
     return butaca
 
 def mostrar_butacas_reservadas(matriz,numeros_filas,letras):
@@ -121,25 +122,26 @@ def confirmar_venta(matriz, recaudacion,butacas_vendidas,numeros_filas, letras):
     butaca=input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
     while butaca!="0":
         butaca = validar_butaca(butaca,letras,numeros_filas)
-        numero = butaca[:-1]
-        letra = butaca[-1]
-        f = int(numero) - 1
-        c = letras.index(letra)
-        numero = int(numero)
-        if matriz[f][c] == "R":
-            print("Su compra ha sido CONFIRMADA")
-            butacas_vendidas.append (f"{numeros_filas[f]}{letras[c]}")
-            matriz[f][c] = "O"
-            if numero in (3, 4):
-                recaudacion += 2000
+        if butaca != "0":
+            numero = butaca[:-1]
+            letra = butaca[-1]
+            f = int(numero) - 1
+            c = letras.index(letra)
+            numero = int(numero)
+            if matriz[f][c] == "R":
+                print("Su compra ha sido CONFIRMADA")
+                butacas_vendidas.append (f"{numeros_filas[f]}{letras[c]}")
+                matriz[f][c] = "O"
+                if numero in (3, 4):
+                    recaudacion += 2000
+                else:
+                    recaudacion += 1500
+                mostrar_butacas_reservadas(matriz,numeros_filas,letras)
+                butaca=input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
             else:
-                recaudacion += 1500
-            mostrar_butacas_reservadas(matriz,numeros_filas,letras)
-            butaca=input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
-        else:
-            print("La butaca seleccionada no se encuentra reservada!")
-            butaca = input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
-    return recaudacion
+                print("La butaca seleccionada no se encuentra reservada!")
+                butaca = input("Ingrese reserva que desea abonar, Ej: 1C (filas 1 a 6, posicion A a I) 0 para terminar: ")
+        return recaudacion
 
 def buscar_butacas_juntas(matriz,letras):
     filas = len(matriz)
@@ -203,23 +205,38 @@ def mostrar_recaudacion (recaudacion,butacas_vendidas):
         print ("La recaudacion diaria de la sala es: $", recaudacion)
 
 def mostrar_estadisticas (matriz, numeros_filas):
-    libres     = sum(1 for fila in matriz for x in fila if x == "L")
-    ocupadas   = sum(1 for fila in matriz for x in fila if x == "O")
-    reservadas = sum(1 for fila in matriz for x in fila if x == "R")
+    libres_lista = [1 for fila in matriz for x in fila if x == "L"] # Por comprensión
+    libres = sum (libres_lista) 
+    
+    ocupadas_lista = [1 for fila in matriz for x in fila if x =="O"] # Por comprensión
+    ocupadas = sum (ocupadas_lista)
+    
+    reservadas_lista = [1 for fila in matriz for x in fila if x =="R"] # Por comprensión
+    reservadas = sum(reservadas_lista)
+
     total_butacas = len(matriz) * len(matriz[0])
     ocupacion_total = ocupadas + reservadas
     porcentaje = round((ocupacion_total * 100) / total_butacas) if total_butacas > 0 else 0
+    
     # Ocupación por fila (O + R por fila)
     ocup_por_fila = []
-    for i, fila in enumerate(matriz):
-        cant = sum(1 for x in fila if x in ("O", "R"))
-        ocup_por_fila.append((i, cant))
+    for i in range(len(matriz)):
+        cant = 0
+        for j in range(len(matriz[i])):
+            x = matriz[i][j]
+            if x == "O" or x == "R":
+                cant += 1
+        ocup_por_fila.append([i, cant])
+
     # Fila con más y menos ocupación
     fila_mas   = max(ocup_por_fila, key=lambda t: t[1])
     fila_menos = min(ocup_por_fila, key=lambda t: t[1])
+
+
     # Ranking de filas por ocupación
     ranking = ocup_por_fila[:]  # copio
     ranking.sort(key=lambda t: (-t[1], t[0]))  # primero más ocupadas, empate por índice
+    
     ranking_mostrable = []
     for par in ranking:
         indice_fila = par[0]                 
